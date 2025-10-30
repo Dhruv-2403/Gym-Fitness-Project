@@ -45,16 +45,16 @@ Our Project is a full-stack web application designed to help users achieve fitne
 | Field       | Type          | Description                     |
 |------------ |-------------- |--------------------------------|
 | user_id     | INT (PK)      | Unique user ID                  |
-| name       | VARCHAR       | Full name                       |
-| email      | VARCHAR       | Unique email                    |
-| password   | VARCHAR       | Hashed password                 |
-| age        | INT           | User age                        |
+| user_name       | VARCHAR       | Full name                       |
+| user_email      | VARCHAR       | Unique email                    |
+| user_password   | VARCHAR       | Hashed password                 |
+| user_age        | INT           | User age                        |
 | height     | FLOAT         | Height (cm)                     |
 | weight     | FLOAT         | Weight (kg)                     |
 | level      | INT           | User level (gamification)       |
 | streak     | INT           | Consecutive workout days        |
 | goals      | TEXT          | Fitness goals                   |
-| joined_on  | DATE          | Registration date               |
+| createdAt  | DATE          | Registration date               |
 
 ### **Workouts**
 | Field        | Type          | Description                  |
