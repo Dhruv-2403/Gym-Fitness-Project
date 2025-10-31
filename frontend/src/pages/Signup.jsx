@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-function Signup() {
+function Signup({ onSwitchToLogin }) {
   const FORCE_SUCCESS = location.hostname === 'localhost'
   const [form, setForm] = useState({ user_name: '', user_email: '', user_password: '', confirm_password: '' })
   const [loading, setLoading] = useState(false)
@@ -153,13 +153,23 @@ function Signup() {
           >
             {signed ? 'Signed up!' : (loading ? 'Creating account…' : 'Sign up')}
           </button>
+
+          <button
+            type="button"
+            onClick={onSwitchToLogin}
+            className="w-full inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-medium px-4 py-2.5 text-sm shadow-md"
+          >
+            Log in
+          </button>
         </form>
         <p className="text-xs text-gray-500 mt-4 text-center">By signing up, you agree to our Terms and Privacy Policy.</p>
+        <p className="text-xs text-gray-500 mt-2 text-center">
+          Already have an account?{' '}
+          <button type="button" onClick={onSwitchToLogin} className="text-indigo-600 hover:text-indigo-700 font-medium">Log in</button>
+        </p>
       </div>
     </div>
   )
 }
 
 export default Signup
-
-
