@@ -65,7 +65,7 @@ You can test endpoints like:
 
 - Profile (to fetch user details using the token)
 
-2. **Frontend Setup (ReactJS + Vite+ Tailwind CSS)**
+2.**Frontend Setup (ReactJS + Vite+ Tailwind CSS)**
 
 - Go to the Frontend Folder
 Navigate to the frontend directory of your project.
