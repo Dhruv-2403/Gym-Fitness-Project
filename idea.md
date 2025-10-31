@@ -32,7 +32,7 @@ Our solution provides:*
 | Category                | Technology                  |
 | ----------------------- | --------------------------- |
 | **Backend Framework**   | Express.js                  |    
-| **Frontend Framework**  | React js 
+| **Frontend Framework**  | React js , Tailwind CSS
 | **Runtime Environment** | Node.js                     |
 | **Database ORM**        | Prisma                      |
 | **Database**            | MySQL                       |
