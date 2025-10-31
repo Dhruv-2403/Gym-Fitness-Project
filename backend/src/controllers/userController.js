@@ -8,7 +8,7 @@ const SALT_ROUNDS = 12;
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN
 
-console.log(JWT_SECRET_KEY)
+// console.log(JWT_SECRET_KEY)
 export async function signup(req, res) {
   try {
     const { user_name, user_email, user_password } = req.body;
@@ -56,7 +56,58 @@ export async function signup(req, res) {
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
+export async function login(req, res) {
+  try {
+    const { user_name, user_email, user_password } = req.body
+    if ((!user_name && !user_email) || !user_password) {
+        return res.status(400).json({
+            "error": "All fields are required"
+        })
+    }
+    try {
+        const findUser = await prisma.user.findFirst({
+            where: {
+                OR: [
+                    { user_name: user_name },
+                    { user_email: user_email }
+                ]
+            },
 
+        })
+        if (!find) {
+            
+          return res.status(401).json({ message: "Invalid credentials" });
+        }
+
+        if (bcrypt.compareSync(user_password, findUser.user_password) === false) {
+            return res.status(401).json({ message: "Invalid credentials" });
+        }
+        const token = jwt.sign({ user_id: findUser.user_id }, JWT_SECRET_KEY, {
+          expiresIn: JWT_EXPIRES_IN,
+        });
+        return res.status(200).json({
+            "message": "Login successful!",
+            "userData": {
+                "username": findUser.user_name,
+                "email": findUser.user_email
+            }
+        })
+
+    }
+    catch {
+        return res.status(401).json({
+            "message": "Invalid credentials"
+        })
+    }
+} catch (err) {
+    console.error("Login error", err);
+    return res.status(500).json({ error: "Internal Server Error" });;
+
+
+
+
+}
+}
 
 export async function profile(req, res) {
   try {
