@@ -2,7 +2,7 @@ import express from "express";
 import userRoutes from  "./routes/userRoutes.js"
 import dotenv from "dotenv"
 dotenv.config()
-console.log(process.env.JWT_SECRET_KEY)
+// console.log(process.env.JWT_SECRET_KEY)
 const app = express()
 
 
