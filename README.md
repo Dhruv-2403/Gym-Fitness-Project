@@ -26,8 +26,10 @@ Implements JWT-based authentication, password hashing (bcrypt), and Prisma ORM f
 # 🎯 Project Purpose
 
 
-The purpose of FitFusion web application is to create a smart and an engaging fitness platform that helps users stay consistent, motivated, and well-equipped.
-By combining AI-driven personalization, gamification, and secure user management, FitFusion aims to make fitness both effective and enjoyable for everyone.
+*The purpose of FitFusion web application is to create a smart and an engaging fitness platform that helps users stay consistent, motivated, and well-equipped.
+By combining AI-driven personalization, gamification, and secure user management, FitFusion aims to make fitness both effective and enjoyable for everyone.*
+
+**Note: We have done JWT Authentication till now**
 
 # ⚙️ Setup and Run Instructions (Local Environment)
 
