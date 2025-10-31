@@ -59,13 +59,13 @@ export async function signup(req, res) {
 export async function login(req, res) {
   try {
     const { user_name, user_email, user_password } = req.body
-    if (!user_name && !user_email || !user_password) {
+    if ((!user_name && !user_email) || !user_password) {
         return res.status(400).json({
             "error": "All fields are required"
         })
     }
     try {
-        const find = await prisma.user.findFirst({
+        const findUser = await prisma.user.findFirst({
             where: {
                 OR: [
                     { user_name: user_name },
@@ -79,17 +79,17 @@ export async function login(req, res) {
           return res.status(401).json({ message: "Invalid credentials" });
         }
 
-        if (bcrypt.compareSync(user_password, find.user_password) === false) {
+        if (bcrypt.compareSync(user_password, findUser.user_password) === false) {
             return res.status(401).json({ message: "Invalid credentials" });
         }
-        const token = jwt.sign({ user_id: find.user_id }, JWT_SECRET_KEY, {
+        const token = jwt.sign({ user_id: findUser.user_id }, JWT_SECRET_KEY, {
           expiresIn: JWT_EXPIRES_IN,
         });
         return res.status(200).json({
             "message": "Login successful!",
             "userData": {
-                "username": find.user_name,
-                "email": find.user_email
+                "username": findUser.user_name,
+                "email": findUser.user_email
             }
         })
 
