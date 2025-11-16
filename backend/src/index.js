@@ -1,13 +1,14 @@
 import express from "express";
-import userRoutes from  "./routes/userRoutes.js"
-import dotenv from "dotenv"
 import cors from "cors";
+
+import userRoutes from  "./routes/userRoutes.js"
+import exerciseRoutes from "./routes/exerciseRoutes.js";
+import workoutRoutes from "./routes/workoutRoutes.js";
+import dotenv from "dotenv"
+
 dotenv.config()
 // console.log(process.env.JWT_SECRET_KEY)
 const app = express()
-
-
-
 
 const PORT=3000
 
@@ -16,21 +17,21 @@ const PORT=3000
 app.use(express.json())
 app.use(cors())
 
-// lightweight request logger
-app.use((req, res, next) => {
-    const start = Date.now()
-    console.log(`${req.method} ${req.url}`)
-    res.on('finish', () => {
-        console.log(`${req.method} ${req.url} -> ${res.statusCode} ${Date.now() - start}ms`)
-    })
-    next()
-})
 
-// health route to verify server responsiveness from browser
-app.get('/api/health', (req, res) => {
-    res.json({ status: 'ok' })
+
+
+app.get("/health", (req, res) => {
+    res.status(200).json({ status: "ok" });
 })
 app.use("/api/users",userRoutes)
+app.use("/api/exercises", exerciseRoutes)
+app.use("/api/workouts", workoutRoutes)
+
+
+app.use((req, res, next) => {
+    res.status(404).json({ error: "Not Found" });
+})
+
 
 app.listen(PORT,()=>{
     console.log(`Server is running on http://localhost:${PORT}`)

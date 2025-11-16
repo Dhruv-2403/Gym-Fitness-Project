@@ -13,5 +13,41 @@ model User{
     user_password String
     createdAt DateTime @default(now())
     
+    workouts Workout[]
+    exercises Exercise[]
+}
 
+model Exercise{
+  id Int @id @default(autoincrement())
+  name String
+  muscleGroup String?
+  user   User? @relation(fields: [userId], references: [user_id])
+  userId Int?
+  createdAt DateTime @default(now())
+  sets WorkoutSet[]
+
+  @@unique([name, userId])
+}
+
+model Workout{
+  id Int @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [user_id])
+  userId Int
+  date DateTime @default(now())
+  title String?
+  notes String?
+  createdAt DateTime @default(now())
+  sets WorkoutSet[]
+}
+
+model WorkoutSet{
+  id Int @id @default(autoincrement())
+  workout   Workout @relation(fields: [workoutId], references: [id])
+  workoutId Int
+  exercise  Exercise @relation(fields: [exerciseId], references: [id])
+  exerciseId Int
+  reps Int
+  weight Float?
+  rpe Float?
+  order Int?
 }
