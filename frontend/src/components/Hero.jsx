@@ -4,7 +4,7 @@ const heroStats = [
   { label: 'Community energy', value: '4.9/5' },
 ]
 
-export default function Hero() {
+export default function Hero({ onSignupClick = () => {}, onStoreClick = () => {} }) {
   return (
     <section id="home" className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 py-24 text-white">
       <div className="absolute inset-0">
@@ -24,13 +24,18 @@ export default function Hero() {
             FitFusion feels like a performance coach, accountability partner, and hype squad combined.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
-            <a
-              href="#signup"
+            <button
+              type="button"
+              onClick={onSignupClick}
               className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 px-8 py-3 text-sm font-semibold uppercase tracking-wide text-white shadow-xl shadow-indigo-500/40 transition hover:scale-105"
             >
               Start Free
-            </a>
-            <button className="inline-flex items-center justify-center rounded-full border border-white/30 px-8 py-3 text-sm font-semibold uppercase tracking-wide text-white/90 transition hover:border-white hover:text-white">
+            </button>
+            <button
+              type="button"
+              onClick={onStoreClick}
+              className="inline-flex items-center justify-center rounded-full border border-white/30 px-8 py-3 text-sm font-semibold uppercase tracking-wide text-white/90 transition hover:border-white hover:text-white"
+            >
               Go Store
             </button>
           </div>
