@@ -1,7 +1,8 @@
 import { useState } from 'react'
 
-function Login({ onSwitchToSignup }) {
-  const FORCE_SUCCESS = location.hostname === 'localhost'
+const API_BASE = import.meta.env?.VITE_API_URL || 'http://localhost:3000'
+
+export default function Login({ onSwitchToSignup, onSuccess }) {
   const [form, setForm] = useState({ user_name: '', user_email: '', user_password: '' })
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState(null)
@@ -17,7 +18,7 @@ function Login({ onSwitchToSignup }) {
     setMessage(null)
 
     if ((!form.user_name && !form.user_email) || !form.user_password) {
-      setMessage({ type: 'error', text: 'Username or email and password are required' })
+      setMessage({ type: 'error', text: 'Provide username or email plus your password.' })
       return
     }
 
@@ -25,7 +26,7 @@ function Login({ onSwitchToSignup }) {
     try {
       const controller = new AbortController()
       const timeoutId = setTimeout(() => controller.abort(), 5000)
-      const res = await fetch('http://localhost:3000/api/users/login', {
+      const res = await fetch(`${API_BASE}/api/users/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -46,14 +47,10 @@ function Login({ onSwitchToSignup }) {
       }
       setMessage({ type: 'success', text: 'Login successful!' })
       setSigned(true)
+      onSuccess?.()
     } catch (err) {
       const isAbort = err?.name === 'AbortError'
-      if (FORCE_SUCCESS) {
-        setMessage({ type: 'success', text: 'Login successful!' })
-        setSigned(true)
-      } else {
-        setMessage({ type: 'error', text: isAbort ? 'Request timed out. Please try again.' : (err.message || 'Login failed') })
-      }
+      setMessage({ type: 'error', text: isAbort ? 'Request timed out, try again.' : (err.message || 'Login failed') })
     } finally {
       setLoading(false)
     }
@@ -61,27 +58,29 @@ function Login({ onSwitchToSignup }) {
 
   return (
     <div className="relative w-full max-w-md">
-      <div className="absolute inset-0 -z-10 blur-3xl opacity-30 bg-gradient-to-tr from-indigo-300 via-purple-300 to-pink-300 rounded-3xl" />
-      <div className="w-full bg-white/90 backdrop-blur rounded-2xl shadow-xl p-8 border border-indigo-100">
-        <div className="text-center mb-6">
-          <div className="mx-auto mb-10 h-12 w-30 h-8 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center text-white font-bold"> FIT-FUSSION </div>
-          <h2 className="text-2xl font-semibold text-gray-900">Welcome back</h2>
-          <p className="text-sm text-gray-500 mt-1">Log in to continue.</p>
+      <div className="absolute inset-0 -z-10 rounded-3xl bg-gradient-to-tr from-indigo-500/20 via-purple-500/10 to-fuchsia-500/20 blur-3xl" />
+      <div className="w-full rounded-2xl border border-white/10 bg-white/90 p-8 text-slate-900 shadow-2xl backdrop-blur">
+        <div className="mb-8 text-center">
+          <div className="mx-auto mb-4 flex h-10 w-32 items-center justify-center rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-sm font-bold tracking-[0.3em] text-white">
+            FITFUSION
+          </div>
+          <h2 className="text-2xl font-semibold text-slate-900">Welcome back</h2>
+          <p className="mt-1 text-sm text-slate-500">Log in to continue your streak.</p>
         </div>
 
         {message && (
           <div
-            className={`${
-              message.type === 'error' ? 'bg-red-50 text-red-700 border-red-200' : 'bg-green-50 text-green-700 border-green-200'
-            } border rounded-md px-3 py-2 mb-4 text-sm`}
+            className={`${message.type === 'error' ? 'bg-red-100/70 text-red-800 border-red-200' : 'bg-emerald-100/70 text-emerald-800 border-emerald-200'} mb-5 rounded-lg border px-3 py-2 text-sm`}
           >
             {message.text}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 text-slate-900">
           <div>
-            <label htmlFor="user_email" className="block text-sm font-medium text-gray-700 mb-1">Email (or use Username below)</label>
+            <label htmlFor="user_email" className="mb-1 block text-sm font-medium text-slate-600">
+              Email (or use username below)
+            </label>
             <input
               id="user_email"
               name="user_email"
@@ -89,11 +88,13 @@ function Login({ onSwitchToSignup }) {
               value={form.user_email}
               onChange={handleChange}
               placeholder="you@example.com"
-              className="block w-full rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 px-3 py-2.5 text-sm bg-white"
+              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200"
             />
           </div>
           <div>
-            <label htmlFor="user_name" className="block text-sm font-medium text-gray-700 mb-1">Username (optional)</label>
+            <label htmlFor="user_name" className="mb-1 block text-sm font-medium text-slate-600">
+              Username (optional)
+            </label>
             <input
               id="user_name"
               name="user_name"
@@ -101,36 +102,38 @@ function Login({ onSwitchToSignup }) {
               value={form.user_name}
               onChange={handleChange}
               placeholder="yourusername"
-              className="block w-full rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 px-3 py-2.5 text-sm bg-white"
+              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200"
             />
           </div>
           <div>
-            <label htmlFor="user_password" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <label htmlFor="user_password" className="mb-1 block text-sm font-medium text-slate-600">
+              Password
+            </label>
             <input
               id="user_password"
               name="user_password"
               type="password"
               value={form.user_password}
               onChange={handleChange}
-              className="block w-full rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 px-3 py-2.5 text-sm bg-white"
+              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200"
             />
           </div>
           <button
             type="submit"
             disabled={loading || signed}
-            className="w-full inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium px-4 py-2.5 text-sm shadow-md disabled:opacity-60"
+            className="inline-flex h-11 w-full items-center justify-center rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-sm font-semibold uppercase tracking-wide text-white shadow-lg shadow-indigo-500/30 transition hover:opacity-95 disabled:opacity-60"
           >
-            {signed ? 'Logged in!' : (loading ? 'Logging in…' : 'Log in')}
+            {signed ? 'Logged in' : loading ? 'Logging in…' : 'Log in'}
           </button>
         </form>
 
-        <p className="text-xs text-gray-500 mt-4 text-center">
+        <p className="mt-6 text-center text-xs text-slate-500">
           Don&apos;t have an account?{' '}
-          <button type="button" onClick={onSwitchToSignup} className="text-indigo-600 hover:text-indigo-700 font-medium">Sign up</button>
+          <button type="button" onClick={onSwitchToSignup} className="font-semibold text-indigo-600 hover:text-indigo-500">
+            Sign up
+          </button>
         </p>
       </div>
     </div>
   )
 }
-
-export default Login

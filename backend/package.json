@@ -24,11 +24,9 @@
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "express": "^5.1.0",
+    "google-auth-library": "^10.5.0",
     "jsonwebtoken": "^9.0.2",
-<<<<<<< HEAD
-    "nodemon": "^3.1.10"
-=======
+    "nodemon": "^3.1.10",
     "zod": "^4.1.12"
->>>>>>> 5119594 (Update UserExercise Management)
   }
 }
