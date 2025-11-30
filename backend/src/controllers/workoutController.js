@@ -16,8 +16,8 @@ export async function createWorkout(req, res) {
 
     res.status(201).json({ workout });
   } catch (err) {
-
-    return res.status(500).json({ error: "createWorkout error" });
+    console.error("createWorkout error", err);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 }
 
@@ -31,9 +31,8 @@ export async function listWorkouts(req, res) {
     });
     res.json({ workouts });
   } catch (err) {
-
-    return res.status(500).json({ error: "listWorkouts error" });
-    
+    console.error("listWorkouts error", err);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 }
 
@@ -51,8 +50,8 @@ export async function getWorkout(req, res) {
 
     res.json({ workout });
   } catch (err) {
-   
-    return res.status(500).json({ error: "getWorkout error" });
+    console.error("getWorkout error", err);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 }
 

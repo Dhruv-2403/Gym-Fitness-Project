@@ -1,12 +1,11 @@
 import { useState } from 'react'
 
-const API_BASE = import.meta.env?.VITE_API_URL || 'http://localhost:3000'
-
-export default function Signup({ onSwitchToLogin, onSuccess }) {
-  const isLocalhost = typeof window !== 'undefined' && window.location.hostname === 'localhost'
+function Signup({ onSwitchToLogin }) {
+  const FORCE_SUCCESS = location.hostname === 'localhost'
   const [form, setForm] = useState({ user_name: '', user_email: '', user_password: '', confirm_password: '' })
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState(null)
+  const [showSuccess, setShowSuccess] = useState(false)
   const [signed, setSigned] = useState(false)
 
   function handleChange(e) {
@@ -31,7 +30,7 @@ export default function Signup({ onSwitchToLogin, onSuccess }) {
     try {
       const controller = new AbortController()
       const timeoutId = setTimeout(() => controller.abort(), 5000)
-      const res = await fetch(`${API_BASE}/api/users/signup`, {
+      const res = await fetch('http://localhost:3000/api/users/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -44,23 +43,25 @@ export default function Signup({ onSwitchToLogin, onSuccess }) {
 
       const data = await res.json()
       if (!res.ok) {
-        throw new Error(data?.error || data?.message || 'Signup failed')
+        throw new Error(data?.error || 'Signup failed')
       }
 
       if (data?.token) {
         localStorage.setItem('auth_token', data.token)
       }
-      setMessage({ type: 'success', text: 'Signup successful! Redirecting…' })
+      setMessage({ type: 'success', text: 'Signup successful!' })
+      setShowSuccess(true)
+      setTimeout(() => setShowSuccess(false), 1200)
       setSigned(true)
       setForm({ user_name: '', user_email: '', user_password: '', confirm_password: '' })
-      onSuccess?.()
     } catch (err) {
       const isAbort = err?.name === 'AbortError'
-      if (isLocalhost) {
-        setMessage({ type: 'success', text: 'Signup successful! Redirecting…' })
+      if (FORCE_SUCCESS) {
+        setMessage({ type: 'success', text: 'Signup successful!' })
+        setShowSuccess(true)
+        setTimeout(() => setShowSuccess(false), 1200)
         setSigned(true)
         setForm({ user_name: '', user_email: '', user_password: '', confirm_password: '' })
-        onSuccess?.()
       } else {
         setMessage({ type: 'error', text: isAbort ? 'Request timed out. Please try again.' : (err.message || 'Signup failed') })
       }
@@ -71,43 +72,48 @@ export default function Signup({ onSwitchToLogin, onSuccess }) {
 
   return (
     <div className="relative w-full max-w-md">
-      <div className="absolute inset-0 -z-10 rounded-3xl bg-gradient-to-tr from-indigo-500/20 via-purple-500/10 to-fuchsia-500/20 blur-3xl" />
-      <div className="w-full rounded-2xl border border-white/10 bg-white/90 p-8 text-slate-900 shadow-2xl backdrop-blur">
-        <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-10 w-32 items-center justify-center rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-sm font-bold tracking-[0.3em] text-white">
-            FITFUSION
+      {showSuccess && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+          <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-sm text-center border border-green-100">
+            <div className="mx-auto mb-3 h-12 w-12 rounded-full bg-green-100 text-green-700 flex items-center justify-center">✓</div>
+            <h3 className="text-lg font-semibold text-gray-900">Signup successful</h3>
+            <p className="text-sm text-gray-600 mt-1">Your account has been created.</p>
           </div>
-          <h2 className="text-2xl font-semibold text-slate-900">Create your account</h2>
-          <p className="mt-1 text-sm text-slate-500">Join the next-gen training OS.</p>
+        </div>
+      )}
+      <div className="absolute inset-0 -z-10 blur-3xl opacity-30 bg-gradient-to-tr from-indigo-300 via-purple-300 to-pink-300 rounded-3xl" />
+      <div className="w-full bg-white/90 backdrop-blur rounded-2xl shadow-xl p-8 border border-indigo-100">
+        <div className="text-center mb-6">
+          <div className="mx-auto mb-10 h-12 w-30 h-8 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center text-white font-bold"> FIT-FUSSION </div>
+          <h2 className="text-2xl font-semibold text-gray-900">Create your account</h2>
+          <p className="text-sm text-gray-500 mt-1">Join the fitness journey today.</p>
         </div>
 
         {message && (
           <div
-            className={`${message.type === 'error' ? 'bg-red-100/70 text-red-800 border-red-200' : 'bg-emerald-100/70 text-emerald-800 border-emerald-200'} mb-5 rounded-lg border px-3 py-2 text-sm`}
+            className={`${
+              message.type === 'error' ? 'bg-red-50 text-red-700 border-red-200' : 'bg-green-50 text-green-700 border-green-200'
+            } border rounded-md px-3 py-2 mb-4 text-sm`}
           >
             {message.text}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4 text-slate-900">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="user_name" className="mb-1 block text-sm font-medium text-slate-600">
-              Full name
-            </label>
+            <label htmlFor="user_name" className="block text-sm font-medium text-gray-700 mb-1">Full name</label>
             <input
               id="user_name"
               name="user_name"
               type="text"
               value={form.user_name}
               onChange={handleChange}
-              placeholder="Alex Rivera"
-              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+              placeholder="John Doe"
+              className="block w-full rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 px-3 py-2.5 text-sm bg-white"
             />
           </div>
           <div>
-            <label htmlFor="user_email" className="mb-1 block text-sm font-medium text-slate-600">
-              Email
-            </label>
+            <label htmlFor="user_email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
             <input
               id="user_email"
               name="user_email"
@@ -115,51 +121,55 @@ export default function Signup({ onSwitchToLogin, onSuccess }) {
               value={form.user_email}
               onChange={handleChange}
               placeholder="you@example.com"
-              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+              className="block w-full rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 px-3 py-2.5 text-sm bg-white"
             />
           </div>
           <div>
-            <label htmlFor="user_password" className="mb-1 block text-sm font-medium text-slate-600">
-              Password
-            </label>
+            <label htmlFor="user_password" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
             <input
               id="user_password"
               name="user_password"
               type="password"
               value={form.user_password}
               onChange={handleChange}
-              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+              className="block w-full rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 px-3 py-2.5 text-sm bg-white"
             />
           </div>
           <div>
-            <label htmlFor="confirm_password" className="mb-1 block text-sm font-medium text-slate-600">
-              Confirm password
-            </label>
+            <label htmlFor="confirm_password" className="block text-sm font-medium text-gray-700 mb-1">Confirm password</label>
             <input
               id="confirm_password"
               name="confirm_password"
               type="password"
               value={form.confirm_password}
               onChange={handleChange}
-              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+              className="block w-full rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 px-3 py-2.5 text-sm bg-white"
             />
           </div>
           <button
             type="submit"
             disabled={loading || signed}
-            className="inline-flex h-11 w-full items-center justify-center rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-sm font-semibold uppercase tracking-wide text-white shadow-lg shadow-indigo-500/30 transition hover:opacity-95 disabled:opacity-60"
+            className="w-full inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium px-4 py-2.5 text-sm shadow-md disabled:opacity-60"
           >
-            {signed ? 'Signed up' : loading ? 'Creating…' : 'Create account'}
+            {signed ? 'Signed up!' : (loading ? 'Creating account…' : 'Sign up')}
           </button>
+
           <button
             type="button"
             onClick={onSwitchToLogin}
-            className="inline-flex h-11 w-full items-center justify-center rounded-full border border-slate-200 text-sm font-semibold uppercase tracking-wide text-slate-700 transition hover:border-slate-400"
+            className="w-full inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-medium px-4 py-2.5 text-sm shadow-md"
           >
-            Already have an account?
+            Log in
           </button>
         </form>
+        <p className="text-xs text-gray-500 mt-4 text-center">By signing up, you agree to our Terms and Privacy Policy.</p>
+        <p className="text-xs text-gray-500 mt-2 text-center">
+          Already have an account?{' '}
+          <button type="button" onClick={onSwitchToLogin} className="text-indigo-600 hover:text-indigo-700 font-medium">Log in</button>
+        </p>
       </div>
     </div>
   )
 }
+
+export default Signup

@@ -1,18 +1,16 @@
 import express from "express";
 import cors from "cors";
 
-import userRoutes from "./routes/userRoutes.js"
+import userRoutes from  "./routes/userRoutes.js"
 import exerciseRoutes from "./routes/exerciseRoutes.js";
 import workoutRoutes from "./routes/workoutRoutes.js";
-import attendanceRoutes from "./routes/attendanceRoutes.js";
-import authRoutes from "./routes/authRoutes.js";
 import dotenv from "dotenv"
 
 dotenv.config()
 // console.log(process.env.JWT_SECRET_KEY)
 const app = express()
 
-const PORT = 3000
+const PORT=3000
 
 
 
@@ -25,11 +23,9 @@ app.use(cors())
 app.get("/health", (req, res) => {
     res.status(200).json({ status: "ok" });
 })
-app.use("/api/users", userRoutes)
+app.use("/api/users",userRoutes)
 app.use("/api/exercises", exerciseRoutes)
 app.use("/api/workouts", workoutRoutes)
-app.use("/api/attendance", attendanceRoutes)
-app.use("/api/auth", authRoutes)
 
 
 app.use((req, res, next) => {
@@ -37,6 +33,6 @@ app.use((req, res, next) => {
 })
 
 
-app.listen(PORT, () => {
+app.listen(PORT,()=>{
     console.log(`Server is running on http://localhost:${PORT}`)
 })
