@@ -13,9 +13,32 @@ model User{
     user_password String
     createdAt DateTime @default(now())
     
+    xp Int  @default(0)
+    streak Int @default(0)
+
+    lastWorkout DateTime?
     workouts Workout[]
     exercises Exercise[]
+    attendances Attendance[]
+
+  
+    progress ProgressLog[]
 }
+model ProgressLog{
+  id Int @id @default(autoincrement())
+  userId Int
+  date DateTime @default(now())
+  weight Float?
+  bodyFat Float?
+  user User @relation(fields:[userId],references:[user_id])
+  lastWorkout DateTime?
+}
+
+    
+
+
+
+
 
 model Exercise{
   id Int @id @default(autoincrement())
@@ -35,7 +58,7 @@ model Workout{
   userId Int
   date DateTime @default(now())
   title String?
-  notes String?
+
   createdAt DateTime @default(now())
   sets WorkoutSet[]
 }
@@ -51,3 +74,18 @@ model WorkoutSet{
   rpe Float?
   order Int?
 }
+
+model Attendance{
+  id Int @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [user_id])
+  userId Int
+  checkIn DateTime
+  checkOut DateTime?
+  durationMinutes Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+
+

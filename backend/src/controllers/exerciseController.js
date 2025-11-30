@@ -13,8 +13,8 @@ export async function createExercise(req, res) {
     if (err.code === "P2002") {
       return res.status(409).json({ error: "Exercise with this name already exists" });
     }
-    console.error("createExercise error", err);
-    res.status(500).json({ error: "Internal Server Error" });
+   
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 }
 
@@ -40,7 +40,7 @@ export async function listExercises(req, res) {
 
     res.json({ exercises });
   } catch (err) {
-    console.error("listExercises error", err);
-    res.status(500).json({ error: "Internal Server Error" });
+   
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 }
