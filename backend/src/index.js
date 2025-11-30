@@ -6,6 +6,9 @@ import exerciseRoutes from "./routes/exerciseRoutes.js";
 import workoutRoutes from "./routes/workoutRoutes.js";
 import attendanceRoutes from "./routes/attendanceRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import productRoutes from "./routes/productRoutes.js";
+import cartRoutes from "./routes/cartRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
 import dotenv from "dotenv"
 
 dotenv.config()
@@ -30,6 +33,9 @@ app.use("/api/exercises", exerciseRoutes)
 app.use("/api/workouts", workoutRoutes)
 app.use("/api/attendance", attendanceRoutes)
 app.use("/api/auth", authRoutes)
+app.use("/api/products", productRoutes)
+app.use("/api/cart", cartRoutes)
+app.use("/api/orders", orderRoutes)
 
 
 app.use((req, res, next) => {
