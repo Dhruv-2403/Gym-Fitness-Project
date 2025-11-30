@@ -61,7 +61,7 @@ async function signup(req, res) {
 
 
 
-export async function login(req, res) {
+async function login(req, res) {
 
   try {
     const { user_name, user_email, user_password } = req.body
@@ -102,7 +102,7 @@ export async function login(req, res) {
 }
 
 
-export async function profile(req, res) {
+async function profile(req, res) {
 
   try {
     const userID = req.user?.user_id;
