@@ -4,6 +4,7 @@ import cors from "cors";
 import userRoutes from  "./routes/userRoutes.js"
 import exerciseRoutes from "./routes/exerciseRoutes.js";
 import workoutRoutes from "./routes/workoutRoutes.js";
+import attendanceRoutes from "./routes/attendanceRoutes.js";
 import dotenv from "dotenv"
 
 dotenv.config()
@@ -26,6 +27,7 @@ app.get("/health", (req, res) => {
 app.use("/api/users",userRoutes)
 app.use("/api/exercises", exerciseRoutes)
 app.use("/api/workouts", workoutRoutes)
+app.use("/api/attendance", attendanceRoutes)
 
 
 app.use((req, res, next) => {
