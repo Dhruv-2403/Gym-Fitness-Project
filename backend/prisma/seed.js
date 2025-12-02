@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 async function main() {
     console.log('🌱 Starting database seed...\n');
 
-    // Clear existing data
+
     console.log('🗑️  Clearing existing data...');
     await prisma.orderItem.deleteMany();
     await prisma.order.deleteMany();
@@ -21,7 +21,7 @@ async function main() {
     await prisma.user.deleteMany();
     console.log('✅ Cleared existing data\n');
 
-    // Create Users
+
     console.log('👤 Creating users...');
     const hashedPassword = await bcrypt.hash('password123', 12);
 
@@ -46,7 +46,6 @@ async function main() {
     });
     console.log(`✅ Created ${2} users\n`);
 
-    // Create Exercises
     console.log('💪 Creating exercises...');
     const exercises = await Promise.all([
         prisma.exercise.create({
@@ -67,7 +66,7 @@ async function main() {
     ]);
     console.log(`✅ Created ${exercises.length} exercises\n`);
 
-    // Create Workouts with Sets
+
     console.log('🏋️ Creating workouts...');
     const workout1 = await prisma.workout.create({
         data: {
@@ -114,7 +113,7 @@ async function main() {
     });
     console.log(`✅ Created ${3} workouts with sets\n`);
 
-    // Create Attendance Records
+
     console.log('📅 Creating attendance records...');
     await prisma.attendance.create({
         data: {
@@ -135,7 +134,7 @@ async function main() {
     });
     console.log(`✅ Created ${2} attendance records\n`);
 
-    // Create Progress Logs
+
     console.log('📊 Creating progress logs...');
     await prisma.progressLog.create({
         data: {
@@ -156,7 +155,6 @@ async function main() {
     });
     console.log(`✅ Created ${2} progress logs\n`);
 
-    // Create Categories
     console.log('🏷️  Creating product categories...');
     const categories = await Promise.all([
         prisma.category.create({
@@ -171,7 +169,6 @@ async function main() {
     ]);
     console.log(`✅ Created ${categories.length} categories\n`);
 
-    // Create Products
     console.log('🛍️  Creating products...');
     const products = await Promise.all([
         prisma.product.create({
@@ -227,7 +224,6 @@ async function main() {
     ]);
     console.log(`✅ Created ${products.length} products\n`);
 
-    // Create Cart Items
     console.log('🛒 Creating cart items...');
     await prisma.cartItem.create({
         data: {
@@ -246,7 +242,6 @@ async function main() {
     });
     console.log(`✅ Created ${2} cart items\n`);
 
-    // Create Orders
     console.log('📦 Creating orders...');
     const order1 = await prisma.order.create({
         data: {
