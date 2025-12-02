@@ -55,7 +55,6 @@ export async function createProduct(req, res) {
             return res.status(400).json({ error: "Name, price, and categoryId are required" });
         }
 
-        // Check if category exists
         const category = await prisma.category.findUnique({
             where: { id: parseInt(categoryId) }
         });
@@ -80,7 +79,7 @@ export async function createProduct(req, res) {
     } catch (err) {
         console.error("Create product error:", err);
 
-        // Return more specific error messages
+
         if (err.code === 'P2002') {
             return res.status(409).json({ error: "Product with this name already exists" });
         }
