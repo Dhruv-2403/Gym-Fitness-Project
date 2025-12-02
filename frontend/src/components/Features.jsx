@@ -65,7 +65,7 @@ export default function Features() {
   return (
     <section id="features" className="relative overflow-hidden bg-slate-950 py-20 text-white">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(107,91,255,0.15),_transparent_55%)]" aria-hidden="true" />
-      <div className="relative mx-auto max-w-6xl px-6">
+      <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
         <div className="max-w-2xl">
           <p className="text-xs font-semibold uppercase tracking-[0.4em] text-indigo-300">Features</p>
           <h2 className="mt-4 text-3xl font-semibold leading-tight text-white sm:text-4xl">Precision-crafted tools for athletes who expect more</h2>
