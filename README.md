@@ -3,7 +3,6 @@
 A full-stack fitness tracking and e-commerce application built with the **MERN stack** (MongoDB replaced with PostgreSQL/Supabase).  
 FitFusion connects fitness enthusiasts with workout tracking tools, progress monitoring, and a marketplace for fitness products.
 
-[![GitHub](https://img.shields.io/badge/GitHub-Dhruv--2403-blue)](https://github.com/Dhruv-2403/FitFusion)
 
 ---
 
