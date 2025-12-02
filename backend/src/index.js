@@ -14,12 +14,13 @@ import orderRoutes from "./routes/orderRoutes.js";
 // console.log(process.env.JWT_SECRET_KEY)
 const app = express()
 
-const PORT = 3000
+const PORT = process.env.PORT || 3000
 
 
 
 app.use(express.json())
-app.use(cors())
+const allowedOrigins = process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(",") : "*"
+app.use(cors({ origin: allowedOrigins }))
 
 
 

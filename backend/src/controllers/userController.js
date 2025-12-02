@@ -64,6 +64,12 @@ async function signup(req, res) {
 async function login(req, res) {
 
   try {
+    console.log('🔐 Login attempt:', {
+      hasEmail: !!req.body.user_email,
+      hasUsername: !!req.body.user_name,
+      hasPassword: !!req.body.user_password
+    });
+
     const { user_name, user_email, user_password } = req.body
 
     if ((!user_email && !user_name) || !user_password) {
@@ -84,6 +90,7 @@ async function login(req, res) {
 
     const identifier = user_email?.toLowerCase()
 
+    console.log('🔍 Searching for user in database...');
     const user = await prisma.user.findFirst({
       where: {
         OR: [
@@ -92,6 +99,7 @@ async function login(req, res) {
         ].filter(Boolean),
       },
     })
+    console.log('✅ Database query completed:', { found: !!user });
 
     if (!user) {
       return res.status(401).json({ error: "Invalid credentials" })
@@ -110,9 +118,11 @@ async function login(req, res) {
       expiresIn: JWT_EXPIRES_IN,
     })
 
+    console.log('✅ Login successful for user:', user.user_email);
     res.json({ message: "Login successful", user: { user_id: user.user_id, user_name: user.user_name, user_email: user.user_email }, token })
   } catch (err) {
-    console.error("Login error", err)
+    console.error("❌ Login error:", err.message)
+    console.error("Full error:", err)
     res.status(500).json({ error: "Internal Server Error", details: err.message })
   }
 }
