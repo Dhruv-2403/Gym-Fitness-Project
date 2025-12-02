@@ -1,4 +1,4 @@
-# 🏋️ FitFusion - Fitness Tracking & E-commerce Platform
+# 🏋️ FitFusion - Gym-Fitness Tracking & E-commerce Platform
 
 A full-stack fitness tracking and e-commerce application built with the **MERN stack** (MongoDB replaced with PostgreSQL/Supabase).  
 FitFusion connects fitness enthusiasts with workout tracking tools, progress monitoring, and a marketplace for fitness products.
