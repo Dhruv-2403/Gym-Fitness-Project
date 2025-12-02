@@ -384,16 +384,8 @@ Run `npx prisma db seed` anytime to reset with fresh sample data!
 
 - [ ] **Social Features**: Follow friends, share workouts
 - [ ] **AI Workout Recommendations**: Personalized workout plans based on history
-- [ ] **Nutrition Tracking**: Calorie and macro tracking
-- [ ] **Workout Templates**: Pre-built workout programs
-- [ ] **Progress Photos**: Upload and track transformation photos
 - [ ] **Leaderboards**: Compete with other users
-- [ ] **Mobile App**: React Native version
-- [ ] **Wearable Integration**: Sync with Fitbit, Apple Watch
-- [ ] **Video Tutorials**: Exercise demonstration videos
-- [ ] **Community Forum**: Discussion boards for fitness topics
 - [ ] **Premium Subscription**: Advanced features and analytics
-- [ ] **Admin Dashboard**: Manage users, products, and analytics
 - [ ] **Real-time Notifications**: Push notifications for achievements
 - [ ] **Payment Gateway**: Stripe/PayPal integration for e-commerce
 
@@ -415,15 +407,6 @@ Opens at `http://localhost:5555`
 
 ---
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
----
 
 ## 📚 Additional Documentation
 
