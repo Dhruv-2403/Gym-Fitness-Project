@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
 
@@ -9,9 +10,7 @@ import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
-import dotenv from "dotenv"
 
-dotenv.config()
 // console.log(process.env.JWT_SECRET_KEY)
 const app = express()
 

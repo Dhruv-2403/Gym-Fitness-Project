@@ -1,5 +1,5 @@
 import { OAuth2Client } from 'google-auth-library';
-import prisma from '../prisma/client.js';
+import prisma from '../../prisma/client.js';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
@@ -29,7 +29,7 @@ export async function googleLogin(req, res) {
             return res.status(400).json({ error: 'Email not provided by Google' });
         }
 
-  
+
         let user = await prisma.user.findUnique({
             where: { user_email: email.toLowerCase() },
         });
@@ -40,7 +40,7 @@ export async function googleLogin(req, res) {
                 data: {
                     user_name: name || email.split('@')[0],
                     user_email: email.toLowerCase(),
-                    user_password: '', 
+                    user_password: '',
                 },
             });
         }

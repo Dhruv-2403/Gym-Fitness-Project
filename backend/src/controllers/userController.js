@@ -70,6 +70,18 @@ async function login(req, res) {
       return res.status(400).json({ error: "Username or email plus password are required" })
     }
 
+    if (typeof user_password !== 'string') {
+      return res.status(400).json({ error: "Invalid password format" })
+    }
+
+    if (user_email && typeof user_email !== 'string') {
+      return res.status(400).json({ error: "Invalid email format" })
+    }
+
+    if (user_name && typeof user_name !== 'string') {
+      return res.status(400).json({ error: "Invalid username format" })
+    }
+
     const identifier = user_email?.toLowerCase()
 
     const user = await prisma.user.findFirst({
@@ -85,6 +97,10 @@ async function login(req, res) {
       return res.status(401).json({ error: "Invalid credentials" })
     }
 
+    if (!user.user_password) {
+      return res.status(401).json({ error: "Account created with Google. Please use Google Login." })
+    }
+
     const isValidPassword = await bcrypt.compare(user_password, user.user_password)
     if (!isValidPassword) {
       return res.status(401).json({ error: "Invalid credentials" })
@@ -97,7 +113,7 @@ async function login(req, res) {
     res.json({ message: "Login successful", user: { user_id: user.user_id, user_name: user.user_name, user_email: user.user_email }, token })
   } catch (err) {
     console.error("Login error", err)
-    res.status(500).json({ error: "Internal Server Error" })
+    res.status(500).json({ error: "Internal Server Error", details: err.message })
   }
 }
 
