@@ -17,7 +17,6 @@ export async function googleLogin(req, res) {
             return res.status(400).json({ error: 'Google token is required' });
         }
 
-        // Verify Google token
         const ticket = await client.verifyIdToken({
             idToken: token,
             audience: process.env.GOOGLE_CLIENT_ID,
@@ -30,23 +29,23 @@ export async function googleLogin(req, res) {
             return res.status(400).json({ error: 'Email not provided by Google' });
         }
 
-        // Check if user exists
+  
         let user = await prisma.user.findUnique({
             where: { user_email: email.toLowerCase() },
         });
 
-        // Create user if doesn't exist
+
         if (!user) {
             user = await prisma.user.create({
                 data: {
                     user_name: name || email.split('@')[0],
                     user_email: email.toLowerCase(),
-                    user_password: '', // OAuth users don't need password
+                    user_password: '', 
                 },
             });
         }
 
-        // Generate JWT token
+
         const jwtToken = jwt.sign({ user_id: user.user_id }, JWT_SECRET_KEY, {
             expiresIn: JWT_EXPIRES_IN,
         });
