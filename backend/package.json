@@ -9,7 +9,8 @@
     "start": "node src/index.js"
   },
   "prisma": {
-    "schema": "schema.prisma"
+    "schema": "schema.prisma",
+    "seed": "node prisma/seed.js"
   },
   "keywords": [],
   "author": "",
