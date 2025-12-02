@@ -1,5 +1,5 @@
 
-import prisma from "../prisma/client.js"
+import prisma from "../../prisma/client.js"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
