@@ -1,8 +1,8 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import prisma from "../../prisma/client.js";
 
 export async function resetStreak(req, res, next) {
   try {
+    if (!req.user || !req.user.user_id) return next();
     const userId = req.user.user_id;
     const user = await prisma.user.findUnique({ where: { user_id: userId } });
     if (!user) return next();
