@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { User, Star, Zap, Clock } from 'lucide-react';
+import { User, Star, Zap, Clock, LogOut } from 'lucide-react';
 import avatarImg from '../assets/profile_avatar.png';
 
 // Dummy streak data for the past year (52 weeks x 7 days)
@@ -26,7 +26,7 @@ const colorScale = (count) => {
     return `rgba(0, 227, 255, ${opacity})`;
 };
 
-const Profile = () => {
+const Profile = ({ onLogout }) => {
     return (
         <section className="min-h-screen bg-slate-950 text-white py-20">
             <div className="container mx-auto px-4">
@@ -44,6 +44,17 @@ const Profile = () => {
                     />
                     <h1 className="text-4xl font-bold neon-text-blue">John Doe</h1>
                     <p className="mt-2 text-gray-300">Age: 29 • Height: 180 cm • Weight: 78 kg</p>
+
+                    {/* Logout Button */}
+                    <motion.button
+                        onClick={onLogout}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="mt-6 flex items-center gap-2 px-6 py-2.5 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 rounded-full text-red-400 font-semibold text-sm transition-all duration-300"
+                    >
+                        <LogOut className="w-4 h-4" />
+                        Logout
+                    </motion.button>
                 </motion.div>
 
                 {/* Metrics */}
@@ -67,19 +78,67 @@ const Profile = () => {
                 </div>
 
                 {/* Streak Heatmap */}
-                <div className="mb-12">
-                    <h2 className="mb-4 text-2xl font-semibold neon-text-purple text-center">Fitness Streak (Last Year)</h2>
-                    <div className="grid grid-cols-7 gap-1">
-                        {streakData.map((week, wIdx) =>
-                            week.map((count, dIdx) => (
+                <div className="mb-12 overflow-x-auto">
+                    <h2 className="mb-6 text-2xl font-semibold neon-text-purple text-center">Fitness Streak (Last Year)</h2>
+                    <div className="inline-block min-w-full px-4">
+                        {/* Month labels */}
+                        <div className="flex mb-2 ml-16">
+                            {['Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov'].map((month, idx) => (
                                 <div
-                                    key={`${wIdx}-${dIdx}`}
+                                    key={month}
+                                    className="text-xs text-gray-400 font-medium"
+                                    style={{
+                                        width: `${(52 / 12) * 20}px`,
+                                        marginLeft: idx === 0 ? '0' : '4px'
+                                    }}
+                                >
+                                    {month}
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Grid with day labels */}
+                        <div className="flex gap-1">
+                            {/* Day labels on the left */}
+                            <div className="flex flex-col justify-around h-28 mr-2">
+                                <div className="text-xs text-gray-400 h-4 flex items-center">Mon</div>
+                                <div className="text-xs text-transparent h-4">Tue</div>
+                                <div className="text-xs text-gray-400 h-4 flex items-center">Wed</div>
+                                <div className="text-xs text-transparent h-4">Thu</div>
+                                <div className="text-xs text-gray-400 h-4 flex items-center">Fri</div>
+                                <div className="text-xs text-transparent h-4">Sat</div>
+                                <div className="text-xs text-transparent h-4">Sun</div>
+                            </div>
+
+                            {/* Contribution squares grid */}
+                            <div className="flex gap-1">
+                                {streakData.map((week, wIdx) => (
+                                    <div key={wIdx} className="flex flex-col gap-1">
+                                        {week.map((count, dIdx) => (
+                                            <div
+                                                key={`${wIdx}-${dIdx}`}
+                                                className="w-4 h-4 rounded-sm hover:ring-2 hover:ring-neon-cyan transition-all cursor-pointer"
+                                                style={{ backgroundColor: colorScale(count) }}
+                                                title={`${count} workouts`}
+                                            />
+                                        ))}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Legend */}
+                        <div className="flex items-center justify-end gap-2 mt-4 text-xs text-gray-400">
+                            <span>Less</span>
+                            {[0, 1, 2, 3, 4, 5].map(level => (
+                                <div
+                                    key={level}
                                     className="w-4 h-4 rounded-sm"
-                                    style={{ backgroundColor: colorScale(count) }}
-                                    title={`${count} workouts`}
+                                    style={{ backgroundColor: colorScale(level) }}
                                 />
-                            ))
-                        )}
+                            ))}
+                            <span>More</span>
+                        </div>
                     </div>
                 </div>
 
