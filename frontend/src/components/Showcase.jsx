@@ -1,7 +1,7 @@
 export default function Showcase() {
   return (
     <section id="showcase" className="bg-slate-950 py-20 text-white">
-      <div className="mx-auto grid max-w-6xl gap-12 px-6 lg:grid-cols-2">
+      <div className="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-2">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.4em] text-indigo-300">Preview</p>
           <h2 className="mt-4 text-3xl font-semibold leading-tight sm:text-4xl">See your entire fitness universe at a glance</h2>
