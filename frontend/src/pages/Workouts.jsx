@@ -6,6 +6,8 @@ import {
 } from 'lucide-react';
 import axios from 'axios';
 
+const API_BASE = import.meta.env?.VITE_API_URL || 'http://localhost:3000';
+
 // Import assets for cinematic feel
 import heroCurls from '../assets/hero_curls.png';
 import heroDeadlift from '../assets/hero_deadlift.png';
@@ -318,7 +320,7 @@ export default function Workouts({ onXpUpdate }) {
         try {
             const token = localStorage.getItem('auth_token');
             if (token) {
-                await axios.post('http://localhost:3000/api/streak/progress', {
+                await axios.post(`${API_BASE}/api/streak/progress`, {
                     xp: workout.xp,
                     weight: parseFloat(physique.weight) || 70, // Fallback if empty
                     bodyFat: 15 // Dummy value or add input
