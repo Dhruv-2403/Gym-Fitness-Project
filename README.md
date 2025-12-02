@@ -154,9 +154,9 @@ erDiagram
 
 ### Frontend
 - **React** 19.1.1 - UI library
-- **React Router** 6.30.2 - Client-side routing
-- **Vite** 7.1.7 - Build tool and dev server
-- **TailwindCSS** 4.1.16 - Utility-first CSS framework
+- **React Router** - Client-side routing
+- **Vite** - Build tool and dev server
+- **TailwindCSS** - Utility-first CSS framework
 - **Google OAuth** (@react-oauth/google) - OAuth integration
 
 ### Backend
@@ -165,7 +165,7 @@ erDiagram
 - **Supabase** - PostgreSQL cloud database
 - **JWT** (jsonwebtoken) - Authentication tokens
 - **bcrypt** - Password hashing
-- **Zod** 4.1.12 - Schema validation
+- **Zod** - Schema validation
 
 ### Database
 - **PostgreSQL** (via Supabase)
@@ -371,16 +371,10 @@ GOOGLE_CLIENT_ID="your-google-client-id"
 
 ## 📊 Sample Data
 
-The seed file (`backend/prisma/seed.js`) creates:
-- **2 Users** (john@fitfusion.com, jane@fitfusion.com)
-- **5 Exercises** (Bench Press, Squat, Deadlift, Overhead Press, Pull-ups)
-- **3 Workouts** with multiple sets
-- **2 Attendance** records with check-in/check-out
-- **2 Progress Logs** with body metrics
-- **3 Product Categories** (Supplements, Equipment, Apparel)
-- **5 Products** with stock and pricing
-- **2 Cart Items**
-- **2 Orders** with order items
+The seed file (`backend/prisma/seed.js`) consists of sample data.
+
+For any sample testing , take data from there and test it locally (Postman/ThunderClient) for API Testing.
+
 
 Run `npx prisma db seed` anytime to reset with fresh sample data!
 
@@ -431,25 +425,10 @@ Opens at `http://localhost:5555`
 
 ---
 
-## 📄 License
-
-This project is licensed under the ISC License.
-
----
-
-## 👨‍💻 Author
-
-**Dhruv Sareen**  
-GitHub: [@Dhruv-2403](https://github.com/Dhruv-2403)
-
----
-
 ## 📚 Additional Documentation
 
 - **API Testing Guide:** [`API_TESTING_GUIDE.md`](API_TESTING_GUIDE.md)
 - **E-commerce API Details:** [`backend/ECOMMERCE_API.md`](backend/ECOMMERCE_API.md)
 - **OAuth Testing:** [`backend/TEST_OAUTH.md`](backend/TEST_OAUTH.md)
 
----
 
-**⭐ If you found this project helpful, please give it a star!**
