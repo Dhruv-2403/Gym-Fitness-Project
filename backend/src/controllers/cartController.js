@@ -56,7 +56,7 @@ export async function addToCart(req, res) {
 
         let cartItem;
         if (existingItem) {
-            // Update quantity
+          
             cartItem = await prisma.cartItem.update({
                 where: { id: existingItem.id },
                 data: { quantity: existingItem.quantity + parseInt(quantity) },
