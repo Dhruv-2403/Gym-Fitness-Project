@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "title": "HIIT Blast",
+    "description": "20 minutes of high-intensity interval training to torch calories.",
+    "type": "timer",
+    "duration": "20 min",
+    "level": "Intermediate"
+  },
+  {
+    "id": 2,
+    "title": "Strength Builder",
+    "description": "Full-body strength routine with progressive overload.",
+    "type": "dumbbell",
+    "duration": "45 min",
+    "level": "Advanced"
+  },
+  {
+    "id": 3,
+    "title": "Mobility Flow",
+    "description": "Dynamic stretches to improve range of motion and recovery.",
+    "type": "heart",
+    "duration": "15 min",
+    "level": "Beginner"
+  },
+  {
+    "id": 4,
+    "title": "Power Yoga",
+    "description": "Build strength and flexibility with this fast-paced yoga flow.",
+    "type": "heart",
+    "duration": "30 min",
+    "level": "Intermediate"
+  },
+  {
+    "id": 5,
+    "title": "Cardio Kickboxing",
+    "description": "High-energy martial arts inspired workout.",
+    "type": "timer",
+    "duration": "40 min",
+    "level": "Advanced"
+  },
+  {
+    "id": 6,
+    "title": "Core Crusher",
+    "description": "Intense abdominal exercises to build a strong core.",
+    "type": "dumbbell",
+    "duration": "10 min",
+    "level": "All Levels"
+  }
+]
