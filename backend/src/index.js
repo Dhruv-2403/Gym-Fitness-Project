@@ -39,7 +39,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-// Generic OPTIONS handler to satisfy CORS preflight without wildcard route patterns
+
 app.use((req, res, next) => {
   if (req.method === 'OPTIONS') {
     res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
