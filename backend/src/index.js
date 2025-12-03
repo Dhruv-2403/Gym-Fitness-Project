@@ -39,12 +39,18 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+// Explicitly handle CORS preflight for all routes
+app.options(/.*/, cors(corsOptions));
 
 
 
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok" });
 });
+
+app.options("/health", cors(corsOptions));
+
+
 
 app.use("/api/users", userRoutes);
 app.use("/api/exercises", exerciseRoutes);
