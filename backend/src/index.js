@@ -39,11 +39,17 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-// Explicitly handle CORS preflight for all routes
-app.options(/.*/, cors(corsOptions));
-
-
-
+// Generic OPTIONS handler to satisfy CORS preflight without wildcard route patterns
+app.use((req, res, next) => {
+  if (req.method === 'OPTIONS') {
+    res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,PATCH,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Accept');
+    return res.sendStatus(204);
+  }
+  next();
+});
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok" });
 });
