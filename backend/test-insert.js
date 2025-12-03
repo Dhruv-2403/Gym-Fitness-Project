@@ -10,7 +10,7 @@ async function main() {
             data: {
                 user_name: 'Test User',
                 user_email: 'testuser@example.com',
-                user_password: 'hashedpassword123', // In real app, this would be bcrypt hashed
+                user_password: 'hashedpassword123', 
             },
         });
 
