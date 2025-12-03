@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-dotenv.config()
+import "dotenv/config";
 
 
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
@@ -20,18 +20,15 @@ export default function authMiddleware(req, res, next) {
     if (!token) {
       return res.status(401).json({ error: "Token not provided" });
     }
-    // payload object
+
+    // Verify token
     const payload = jwt.verify(token, JWT_SECRET_KEY);
-    // console.log(payload)
-
-
-
-
 
     if (!payload || !payload.user_id) {
       return res.status(401).json({ error: "Invalid token" });
     }
 
+    // Attach user to request
     req.user = {
       user_id: payload.user_id,
     };
