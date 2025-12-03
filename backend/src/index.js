@@ -57,6 +57,9 @@ app.get("/health", (req, res) => {
 app.options("/health", cors(corsOptions));
 
 
+app.get("/", (req, res) => {
+  res.send("Backend is running");
+});
 
 app.use("/api/users", userRoutes);
 app.use("/api/exercises", exerciseRoutes);
