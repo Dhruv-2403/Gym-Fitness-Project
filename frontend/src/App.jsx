@@ -10,6 +10,8 @@ import Testimonials from './components/Testimonials.jsx';
 import Footer from './components/Footer.jsx';
 import Signup from './pages/Signup.jsx';
 import Login from './pages/Login.jsx';
+
+
 import Workouts from './pages/Workouts.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import Store from './pages/Store.jsx';
