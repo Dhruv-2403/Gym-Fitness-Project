@@ -8,7 +8,6 @@ import AccessPanels from './components/AccessPanels.jsx';
 import Testimonials from './components/Testimonials.jsx';
 
 import Footer from './components/Footer.jsx';
-import Signup from './pages/Signup.jsx';
 import Login from './pages/Login.jsx';
 
 
@@ -22,10 +21,7 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
-  const openSignup = () => {
-    setAuthMode('signup');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  // Only Google Sign-In is supported
 
   const openLogin = () => {
     setAuthMode('login');
@@ -51,7 +47,7 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const isAuthView = authMode === 'login' || authMode === 'signup';
+  const isAuthView = authMode === 'login';
 
   // Protected Route Wrapper
   const ProtectedRoute = ({ children }) => {
@@ -69,10 +65,10 @@ function App() {
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.4em] text-indigo-300">
-                {authMode === 'signup' ? 'Join the movement' : 'Welcome back'}
+                {'Welcome back'}
               </p>
               <h1 className="mt-3 text-3xl font-semibold leading-tight sm:text-4xl">
-                {authMode === 'signup' ? 'Create your FitFusion identity' : 'Log back into FitFusion'}
+                {'Log back into FitFusion'}
               </h1>
             </div>
             <button
@@ -84,11 +80,7 @@ function App() {
             </button>
           </div>
           <div className="flex justify-center">
-            {authMode === 'signup' ? (
-              <Signup onSwitchToLogin={openLogin} onSuccess={() => openLogin()} />
-            ) : (
-              <Login onSwitchToSignup={openSignup} onSuccess={handleLoginSuccess} />
-            )}
+            <Login onSuccess={handleLoginSuccess} />
           </div>
         </div>
       </section>
@@ -99,7 +91,7 @@ function App() {
     <div className="min-h-screen bg-slate-950 text-white">
       <Navbar
         onLoginClick={openLogin}
-        onSignupClick={openSignup}
+        onSignupClick={openLogin}
         isAuthenticated={isAuthenticated}
         onLogout={handleLogout}
       />
@@ -109,10 +101,10 @@ function App() {
         <Routes>
           <Route path="/" element={
             <main>
-              <Hero onSignupClick={openSignup} onLoginClick={openLogin} />
+              <Hero onSignupClick={openLogin} onLoginClick={openLogin} />
               <Features />
               <Showcase />
-              <AccessPanels onSignupClick={openSignup} onLoginClick={openLogin} />
+              <AccessPanels onSignupClick={openLogin} onLoginClick={openLogin} />
               <Testimonials />
 
             </main>

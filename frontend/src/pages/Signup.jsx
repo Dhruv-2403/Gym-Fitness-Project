@@ -1,125 +1,15 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
+import { GoogleLogin } from '@react-oauth/google'
 
 const API_BASE = import.meta.env?.VITE_API_URL || 'http://localhost:3000'
 
 export default function Signup({ onSwitchToLogin, onSuccess, onGoHome }) {
-  const isLocalhost = typeof window !== 'undefined' && window.location.hostname === 'localhost'
-  const [form, setForm] = useState({ user_name: '', user_email: '', user_password: '', confirm_password: '' })
-  const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState(null)
   const [signed, setSigned] = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
 
-  useEffect(() => {
-    // Load Google Identity Services
-    const script = document.createElement('script')
-    script.src = 'https://accounts.google.com/gsi/client'
-    script.async = true
-    script.defer = true
-    document.body.appendChild(script)
-
-    script.onload = () => {
-      if (window.google) {
-        // Initialize the client
-        window.google.accounts.id.initialize({
-          client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-          callback: handleGoogleResponse,
-          auto_select: false,
-        })
-
-        // Render the button
-        const buttonDiv = document.getElementById('google-btn-container')
-        if (buttonDiv) {
-          window.google.accounts.id.renderButton(buttonDiv, {
-            theme: 'filled_black',
-            size: 'large',
-            width: '100%', // Make it fill the container
-            text: 'signup_with',
-            shape: 'pill',
-          })
-        }
-      }
-    }
-
-    return () => {
-      document.body.removeChild(script)
-    }
-  }, [])
-
-  function handleChange(e) {
-    const { name, value } = e.target
-    setForm((prev) => ({ ...prev, [name]: value }))
-  }
-
-  async function handleSubmit(e) {
-    e.preventDefault()
-    setMessage(null)
-
-    if (!form.user_name || !form.user_email || !form.user_password) {
-      setMessage({ type: 'error', text: 'All fields are mandatory' })
-      return
-    }
-    if (form.user_password !== form.confirm_password) {
-      setMessage({ type: 'error', text: 'Passwords do not match' })
-      return
-    }
-
-    setLoading(true)
-    try {
-      const controller = new AbortController()
-      const timeoutId = setTimeout(() => controller.abort(), 5000)
-      const res = await fetch(`${API_BASE}/api/users/signup`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          user_name: form.user_name,
-          user_email: form.user_email,
-          user_password: form.user_password,
-        }),
-        signal: controller.signal,
-      }).finally(() => clearTimeout(timeoutId))
-
-      const data = await res.json()
-      if (!res.ok) {
-        throw new Error(data?.error || data?.message || 'Signup failed')
-      }
-
-      if (data?.token) {
-        localStorage.setItem('auth_token', data.token)
-      }
-      setMessage({ type: 'success', text: 'Signup successful! Redirecting…' })
-      setSigned(true)
-      setForm({ user_name: '', user_email: '', user_password: '', confirm_password: '' })
-      onSuccess?.()
-    } catch (err) {
-      const isAbort = err?.name === 'AbortError'
-      if (isLocalhost) {
-        setMessage({ type: 'success', text: 'Signup successful! Redirecting…' })
-        setSigned(true)
-        setForm({ user_name: '', user_email: '', user_password: '', confirm_password: '' })
-        onSuccess?.()
-      } else {
-        setMessage({ type: 'error', text: isAbort ? 'Request timed out. Please try again.' : (err.message || 'Signup failed') })
-      }
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  function handleGoogleSignup() {
-    if (typeof window !== 'undefined' && window.google?.accounts?.id) {
-      try {
-        window.google.accounts.id.prompt()
-      } catch (err) {
-        setMessage({ type: 'error', text: 'Unable to start Google Sign-In. Please try again.' })
-      }
-    } else {
-      setMessage({ type: 'error', text: 'Google SDK not loaded yet. Please wait a moment and try again.' })
-    }
-  }
-
-  async function handleGoogleResponse(response) {
-    console.log('Google response received:', response)
+  async function handleGoogleResponse(credentialResponse) {
+    console.log('Google response received:', credentialResponse)
     setGoogleLoading(true)
     setMessage(null)
 
@@ -127,7 +17,7 @@ export default function Signup({ onSwitchToLogin, onSuccess, onGoHome }) {
       const res = await fetch(`${API_BASE}/api/auth/google`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token: response.credential }),
+        body: JSON.stringify({ token: credentialResponse.credential }),
       })
 
       const data = await res.json()
@@ -175,118 +65,22 @@ export default function Signup({ onSwitchToLogin, onSuccess, onGoHome }) {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label htmlFor="user_name" className="mb-2 block text-xs font-semibold uppercase tracking-wider text-gray-400">
-              Full Name
-            </label>
-            <input
-              id="user_name"
-              name="user_name"
-              type="text"
-              value={form.user_name}
-              onChange={handleChange}
-              placeholder="Alex Rivera"
-              required
-              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-gray-500 focus:border-neon-blue focus:outline-none focus:ring-1 focus:ring-neon-blue transition-all"
-            />
-          </div>
-          <div>
-            <label htmlFor="user_email" className="mb-2 block text-xs font-semibold uppercase tracking-wider text-gray-400">
-              Email
-            </label>
-            <input
-              id="user_email"
-              name="user_email"
-              type="email"
-              value={form.user_email}
-              onChange={handleChange}
-              placeholder="you@example.com"
-              required
-              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-gray-500 focus:border-neon-blue focus:outline-none focus:ring-1 focus:ring-neon-blue transition-all"
-            />
-          </div>
-          <div>
-            <label htmlFor="user_password" className="mb-2 block text-xs font-semibold uppercase tracking-wider text-gray-400">
-              Password
-            </label>
-            <input
-              id="user_password"
-              name="user_password"
-              type="password"
-              value={form.user_password}
-              onChange={handleChange}
-              required
-              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-gray-500 focus:border-neon-blue focus:outline-none focus:ring-1 focus:ring-neon-blue transition-all"
-            />
-          </div>
-          <div>
-            <label htmlFor="confirm_password" className="mb-2 block text-xs font-semibold uppercase tracking-wider text-gray-400">
-              Confirm Password
-            </label>
-            <input
-              id="confirm_password"
-              name="confirm_password"
-              type="password"
-              value={form.confirm_password}
-              onChange={handleChange}
-              required
-              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-gray-500 focus:border-neon-blue focus:outline-none focus:ring-1 focus:ring-neon-blue transition-all"
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading || signed}
-            className="w-full rounded-full bg-gradient-to-r from-neon-blue to-neon-purple py-3.5 text-sm font-bold uppercase tracking-wide text-black shadow-[0_0_20px_rgba(0,227,255,0.3)] transition-all hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(0,227,255,0.5)] disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {signed ? 'Account Created' : loading ? 'Creating Account…' : 'Create Account'}
-          </button>
-
-          <div className="relative my-8">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-white/10"></div>
-            </div>
-            <div className="relative flex justify-center text-xs uppercase tracking-wider">
-              <span className="bg-[#0a0a0a] px-3 text-gray-500">Or continue with</span>
-            </div>
-          </div>
-
+        <div className="space-y-5">
           <div className="flex justify-center w-full">
-            <button
-              type="button"
-              onClick={handleGoogleSignup}
-              className="flex w-full items-center justify-center gap-3 rounded-full border border-white/10 bg-white/5 py-3 text-sm font-medium text-white transition-all hover:bg-white/10 hover:border-white/20"
-            >
-              <svg className="h-5 w-5" viewBox="0 0 24 24">
-                <path
-                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                  fill="#4285F4"
-                />
-                <path
-                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                  fill="#34A853"
-                />
-                <path
-                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-                  fill="#FBBC05"
-                />
-                <path
-                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                  fill="#EA4335"
-                />
-              </svg>
-              Continue with Google
-            </button>
+            <GoogleLogin
+              onSuccess={handleGoogleResponse}
+              onError={() => {
+                setMessage({ type: 'error', text: 'Google Signup Failed' })
+              }}
+              theme="filled_black"
+              size="large"
+              shape="pill"
+              width="100%"
+              text="signup_with"
+            />
           </div>
-        </form>
+        </div>
 
-        <p className="mt-8 text-center text-sm text-gray-400">
-          Already have an account?{' '}
-          <button type="button" onClick={onSwitchToLogin} className="font-semibold text-neon-blue hover:text-neon-purple transition-colors">
-            Log in
-          </button>
-        </p>
       </div>
     </div>
   )

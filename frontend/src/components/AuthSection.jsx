@@ -1,10 +1,4 @@
-import Signup from '../pages/Signup.jsx'
 import Login from '../pages/Login.jsx'
-
-function scrollToSection(targetId) {
-  if (typeof window === 'undefined') return
-  document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-}
 
 export default function AuthSection() {
   return (
@@ -17,12 +11,9 @@ export default function AuthSection() {
             The FitFusion identity layer is now ready. Sync your data, access AI coaching, and keep your streak alive with secure authentication.
           </p>
         </div>
-        <div className="mt-16 grid gap-14 lg:grid-cols-2">
-          <div id="signup" className="scroll-mt-32">
-            <Signup onSwitchToLogin={() => scrollToSection('login')} />
-          </div>
+        <div className="mt-16 max-w-lg mx-auto">
           <div id="login" className="scroll-mt-32">
-            <Login onSwitchToSignup={() => scrollToSection('signup')} />
+            <Login />
           </div>
         </div>
       </div>
