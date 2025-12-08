@@ -28,6 +28,10 @@ const corsOptions = {
   credentials: true,
   origin: function (origin, callback) {
     if (!origin) return callback(null, true);
+    // Always allow localhost during development to simplify local testing
+    if (origin?.startsWith('http://localhost:')) {
+      return callback(null, true);
+    }
     if (allowedOrigins.length === 0) return callback(null, true);
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
