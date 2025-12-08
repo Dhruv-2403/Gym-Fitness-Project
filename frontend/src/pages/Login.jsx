@@ -10,7 +10,7 @@ export default function Login({ onSwitchToSignup, onSuccess, onGoHome }) {
   const [googleLoading, setGoogleLoading] = useState(false)
 
   useEffect(() => {
-    // Load Google Identity Services
+
     const script = document.createElement('script')
     script.src = 'https://accounts.google.com/gsi/client'
     script.async = true
@@ -19,20 +19,20 @@ export default function Login({ onSwitchToSignup, onSuccess, onGoHome }) {
 
     script.onload = () => {
       if (window.google) {
-        // Initialize the client
+  
         window.google.accounts.id.initialize({
           client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
           callback: handleGoogleResponse,
           auto_select: false,
         })
 
-        // Render the button
+       
         const buttonDiv = document.getElementById('google-btn-container')
         if (buttonDiv) {
           window.google.accounts.id.renderButton(buttonDiv, {
             theme: 'filled_black',
             size: 'large',
-            width: '100%', // Make it fill the container
+            width: '100%', 
             text: 'signin_with',
             shape: 'pill',
           })
