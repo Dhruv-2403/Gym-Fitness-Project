@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { Home, Dumbbell, LayoutDashboard, ShoppingBag, User, Menu, X, LogIn, LogOut, Zap } from 'lucide-react';
 
-const Navbar = ({ isAuthenticated, onLogout, onLoginClick, userXP = 0 }) => {
+const Navbar = ({ isAuthenticated, onLogout, onLoginClick, userXP = 0, onHomeClick }) => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const activeTab = location.pathname;
@@ -36,6 +36,7 @@ const Navbar = ({ isAuthenticated, onLogout, onLoginClick, userXP = 0 }) => {
               <Link
                 key={item.name}
                 to={item.path}
+                onClick={item.name === 'Home' && onHomeClick ? onHomeClick : undefined}
                 className={`relative px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300 group ${activeTab === item.path ? 'text-neon-blue' : 'text-gray-300 hover:text-white'}`}
               >
                 <span className="flex items-center gap-2 relative z-10">
@@ -112,7 +113,12 @@ const Navbar = ({ isAuthenticated, onLogout, onLoginClick, userXP = 0 }) => {
                 key={item.name}
                 to={item.path}
                 className="text-gray-300 hover:text-white hover:bg-white/5 block px-4 py-3 rounded-lg text-base font-medium flex items-center gap-3 transition-colors"
-                onClick={() => setIsOpen(false)}
+                onClick={() => {
+                  if (item.name === 'Home' && onHomeClick) {
+                    onHomeClick();
+                  }
+                  setIsOpen(false);
+                }}
               >
                 <item.icon className="w-5 h-5 text-neon-blue" />
                 {item.name}
