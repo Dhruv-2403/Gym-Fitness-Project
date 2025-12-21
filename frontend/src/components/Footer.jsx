@@ -8,7 +8,7 @@ const footerLinks = [
 export default function Footer() {
   return (
     <footer className="bg-slate-950 py-10 text-white/70">
-      <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 text-sm md:flex-row md:items-center md:justify-between">
+      <div className="flex w-full flex-col gap-6 px-4 sm:px-6 lg:px-8 md:flex-row md:items-center md:justify-between">
         <div>
           <p className="text-lg font-semibold text-white">FitFusion</p>
           <p className="text-xs uppercase tracking-[0.4em] text-white/40">Elevate every session</p>

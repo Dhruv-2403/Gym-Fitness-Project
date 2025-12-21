@@ -8,6 +8,9 @@ import heroDeadlift from '../assets/hero_deadlift.png';
 import heroFlex from '../assets/hero_flex.png';
 import heroChest from '../assets/hero_chest.png';
 import heroPortrait from '../assets/hero_portrait.png';
+import heroBattleRopes from '../assets/hero_battle_ropes.png';
+import heroBoxJump from '../assets/hero_box_jump.png';
+import heroKettlebell from '../assets/hero_kettlebell.png';
 
 const Hero = ({ onSignupClick, onLoginClick }) => {
   const floatingImages = [
@@ -46,18 +49,56 @@ const Hero = ({ onSignupClick, onLoginClick }) => {
       rotate: 15,
       delay: 3.0
     },
+    {
+      src: heroBattleRopes,
+      alt: "Battle Ropes",
+      style: "top-[35%] right-[15%] z-10 w-48 md:w-56 aspect-square",
+      rotate: 4,
+      delay: 1.2
+    },
+    {
+      src: heroBoxJump,
+      alt: "Box Jump",
+      style: "bottom-[15%] left-[35%] z-25 w-52 md:w-60 aspect-square",
+      rotate: -5,
+      delay: 3.5
+    },
+    {
+      src: heroKettlebell,
+      alt: "Kettlebell Swing",
+      style: "top-[12%] left-[48%] z-15 w-40 md:w-48 aspect-[3/4] opacity-85",
+      rotate: 8,
+      delay: 2.5
+    },
   ];
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+    <section className="relative min-h-screen overflow-hidden pt-36 px-4 sm:px-6 lg:px-8">
       {/* Background Elements */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-neon-blue/20 rounded-full blur-[100px] animate-pulse-glow" />
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-neon-purple/20 rounded-full blur-[100px] animate-pulse-glow" style={{ animationDelay: '1.5s' }} />
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
+
+        {/* Holographic Background Elements */}
+        <motion.div
+          animate={{ opacity: [0.2, 0.5, 0.2] }}
+          transition={{ duration: 4, repeat: Infinity }}
+          className="absolute top-20 bottom-0 left-[-10%] w-[60%] flex items-center justify-center pointer-events-none"
+        >
+          <img src={heroHolo} alt="Hologram Left" className="h-[80%] w-auto object-contain opacity-40 blur-sm" />
+        </motion.div>
+
+        <motion.div
+          animate={{ opacity: [0.2, 0.5, 0.2] }}
+          transition={{ duration: 4, repeat: Infinity, delay: 2 }}
+          className="absolute top-20 bottom-0 right-[-10%] w-[60%] flex items-center justify-center pointer-events-none"
+        >
+          <img src={heroHolo} alt="Hologram Right" className="h-[80%] w-auto object-contain opacity-40 blur-sm scale-x-[-1]" />
+        </motion.div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div className="relative z-10 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
         {/* Text Content */}
         <motion.div
@@ -111,23 +152,7 @@ const Hero = ({ onSignupClick, onLoginClick }) => {
 
         {/* 3D Visuals - Floating Tiles Layout */}
         <div className="relative h-[600px] w-full perspective-1000">
-          {/* Holographic Background Element - Left */}
-          <motion.div
-            animate={{ opacity: [0.3, 0.6, 0.3] }}
-            transition={{ duration: 4, repeat: Infinity }}
-            className="absolute top-0 bottom-0 -left-[600px] w-full flex items-center justify-center z-0"
-          >
-            <img src={heroHolo} alt="Hologram Left" className="w-full h-full object-contain opacity-40 blur-sm scale-125" />
-          </motion.div>
 
-          {/* Holographic Background Element - Right */}
-          <motion.div
-            animate={{ opacity: [0.3, 0.6, 0.3] }}
-            transition={{ duration: 4, repeat: Infinity, delay: 2 }}
-            className="absolute top-0 bottom-0 -right-[600px] w-full flex items-center justify-center z-0"
-          >
-            <img src={heroHolo} alt="Hologram Right" className="w-full h-full object-contain opacity-40 blur-sm scale-125 scale-x-[-1]" />
-          </motion.div>
 
           {/* Floating Image Tiles */}
           {floatingImages.map((img, index) => (

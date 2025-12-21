@@ -71,16 +71,9 @@ function App() {
                 {'Log back into FitFusion'}
               </h1>
             </div>
-            <button
-              type="button"
-              onClick={returnHome}
-              className="inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-2 text-xs font-semibold uppercase tracking-wide text-white transition hover:border-white"
-            >
-              ← Back to Home
-            </button>
           </div>
           <div className="flex justify-center">
-            <Login onSuccess={handleLoginSuccess} />
+            <Login onSuccess={handleLoginSuccess} onGoHome={returnHome} />
           </div>
         </div>
       </section>
@@ -88,12 +81,13 @@ function App() {
   );
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-slate-950 text-white overflow-x-hidden">
       <Navbar
         onLoginClick={openLogin}
         onSignupClick={openLogin}
         isAuthenticated={isAuthenticated}
         onLogout={handleLogout}
+        onHomeClick={returnHome}
       />
       {isAuthView ? (
         renderAuth()
